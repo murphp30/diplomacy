@@ -11,20 +11,31 @@ players = ["Pearse", "Mark", "Tim",
 countries = ["Austria", "Germany", "Turkey", 
 			"Russia", "Italy", "France", "Britain"]
 
-disallowed = {"Pearse":"Germany", "Mark":"Austria", "Tim":"Turkey",
-			"Conor":"Italy", "Niall":"Russia", "Billy":"Britain",
-			"Max":"France"}
+# disallowed = {"Pearse":"Germany", "Mark":"Austria", "Tim":"Turkey",
+# 			"Conor":"Italy", "Niall":"Russia", "Billy":"Britain",
+# 			"Max":"France"}
+
+disallowed = {"Pearse":["Germany","France"],
+				"Mark":["Austria","Russia"], 
+				"Tim":["Turkey","Britain"],
+				"Conor":["Italy","Germany"],
+				"Niall":["Russia","Austria"],
+				"Billy":["Britain","Italy"],
+				"Max":["France","Turkey"]}
+
 shuffle(players)
 shuffle(countries)
 
-
-samsies = np.array([disallowed[player] for player in players]) == np.array(countries)
+dis = np.array([disallowed[player] for player in players])
+samsies = np.sum([dis[:,i] == np.array(countries) for i in range(dis.shape[1])])
 # i=0
 while np.sum(samsies) != 0:
 	# print(i)
 	shuffle(players)
 	shuffle(countries)
-	samsies = np.array([disallowed[player] for player in players]) == np.array(countries)
+	dis = np.array([disallowed[player] for player in players])
+	samsies = np.sum([dis[:,i] == np.array(countries) for i in range(dis.shape[1])])
+
 	# i+=1
 
 new_roles = {player:country for player, country in zip(players,countries)}
